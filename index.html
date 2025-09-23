@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дизельний генератор Könner & Söhnen KS 11-2DE ATSR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #004d96;
+            --secondary-color: #004d96; /* Синий цвет для маркеров */
+            --light-gray: #f4f4f4;
+            --dark-gray: #333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+        }
+        .product-card {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .product-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        .price-container {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: white;
+            text-align: center;
+        }
+        .price-container:hover {
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+        }
+        .product-content {
+            padding: 30px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .image-gallery {
+            flex: 1;
+            min-width: 280px;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .main-image {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .thumbnail {
+            width: 65px;
+            height: 65px;
+            cursor: pointer;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease-in-out;
+        }
+        .thumbnail.active, .thumbnail:hover {
+            border-color: var(--primary-color);
+        }
+        .product-details {
+            flex: 2;
+            min-width: 300px;
+        }
+        .product-details h2 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .product-details p {
+            line-height: 1.6;
+        }
+        .product-details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .product-details li {
+            background: #fafafa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        /* Tabs and Accordions */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-top: 20px;
+        }
+        .tab-button {
+            padding: 12px 25px;
+            cursor: pointer;
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .tab-content {
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            border-top: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .specifications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--dark-gray);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        
+        /* Accordion for features */
+        .features-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .feature-item {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--dark-gray);
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .feature-item:hover, .feature-item.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .feature-item-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .feature-item-title .number-box {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 4px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            font-size: 1em;
+            font-weight: 700;
+            border: 3px solid var(--primary-color);
+            border-radius: 20%;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .feature-item:hover .number-box, .feature-item.active .number-box {
+            background-color: white;
+            color: var(--primary-color);
+            border-color: white;
+        }
+        .feature-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: #fff;
+            padding: 0 20px;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .feature-content.active {
+            max-height: 1000px; /* Large value to allow content to expand */
+            padding: 20px;
+        }
+        .feature-content-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .feature-content-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .content-text {
+            width: 100%;
+        }
+        .content-image {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+        .content-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .accordion-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+            color: var(--primary-color);
+        }
+        .feature-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Custom list style for colored dots and indent */
+        .styled-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .styled-list li {
+            display: flex; 
+            align-items: flex-start;
+            gap: 10px; 
+            margin-bottom: 8px;
+            line-height: 1.4;
+            background: #fafafa;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .styled-list li::before {
+            content: '\2022'; 
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* Generic Accordion Styling */
+        .accordion-item {
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .accordion-header:hover {
+            background-color: #eee;
+        }
+        .accordion-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .accordion-item.active .accordion-header {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .accordion-item.active .accordion-icon {
+            color: white;
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 20px;
+            background-color: white;
+        }
+        .accordion-content-inner {
+            padding: 20px 0;
+        }
+
+        /* Contacts and Map */
+        .contacts-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .contact-info {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .contact-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            min-width: 45px;
+        }
+        .contact-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .icon-person { background: linear-gradient(45deg, #007bff, #0056b3); }
+        .icon-company { background: linear-gradient(45deg, #6c757d, #343a40); }
+        .icon-phone { background: linear-gradient(45deg, #28a745, #19692c); }
+        .icon-website { background: linear-gradient(45deg, #17a2b8, #0f6674); }
+        .icon-email { background: linear-gradient(45deg, #dc3545, #8b1e28); }
+        .contact-text {
+            font-size: 1.1em;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        .contact-text a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s;
+        }
+        .contact-text a:hover {
+            color: var(--primary-color);
+        }
+        .map-container {
+            flex: 1.5;
+            min-width: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            height: 315px;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Responsive layout for large screens */
+        @media (min-width: 768px) {
+            .product-content {
+                flex-wrap: nowrap;
+            }
+            .contacts-grid {
+                flex-direction: row;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .product-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .product-content {
+                padding: 20px;
+            }
+            .accordion-content-layout, .feature-content-inner {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-card">
+    <div class="product-header">
+        <h1>Дизельний генератор Könner & Söhnen KS 11-2DE ATSR</h1>
+    </div>
+    <div class="product-content">
+        <div class="image-gallery">
+            <img id="mainProductImage" class="main-image" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_03_17a34168-bb9b-4a83-9356-26f1d0b37d98.png?v=1723490165&width=1000" alt="Основне зображення дизельного генератора">
+            <div class="thumbnail-container">
+                <img class="thumbnail active" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_03_17a34168-bb9b-4a83-9356-26f1d0b37d98.png?v=1723490165&width=1000" alt="Мініатюра 1" onclick="changeMainImage(this)">
+                <img class="thumbnail" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_05_e07f2b94-8ca9-4a67-b990-97bb381d877a.png?v=1723490164&width=1000" alt="Мініатюра 2" onclick="changeMainImage(this)">
+                <img class="thumbnail" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_04_47719e49-8f84-48f2-b9a0-2f2db192d5be.png?v=1723490165&width=1600" alt="Мініатюра 3" onclick="changeMainImage(this)">
+                <img class="thumbnail" src="https://konner-sohnen.com.ua/cdn/shop/files/photo_2022-08-21_13-30-10_d12225cb-4b6f-4ec1-80ae-667bea773ef2.jpg?v=1723490164&width=1000" alt="Мініатюра 4" onclick="changeMainImage(this)">
+                <img class="thumbnail" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_02_dd6df9e0-d314-460b-b6c1-f88a810256ff.png?v=1723490164&width=1600" alt="Мініатюра 5" onclick="changeMainImage(this)">
+                <img class="thumbnail" src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_01_8f8a6bdb-cc4b-41a7-8096-bd742da81a60.png?v=1723490164&width=1600" alt="Мініатюра 6" onclick="changeMainImage(this)">
+            </div>
+        </div>
+
+        <div class="product-details">
+            <div class="price-container">
+                89 999,00 грн
+            </div>
+            <p style="margin-top: 20px;">Дизельний генератор Könner & Söhnen KS 11-2DE ATSR — це надійне та потужне джерело електроенергії в шумозахисному кожусі. Ідеально підходить для тривалої роботи в умовах високих навантажень як для приватного, так і для комерційного використання. Можливість підключення системи АВР (автоматичного введення резерву) робить його зручним для автоматичного запуску у разі збоїв в електромережі.</p>
+            
+            <h2>Ключові особливості</h2>
+            <ul>
+                <li><strong>Фірмовий двигун:</strong> Надійний дизельний двигун KS, розроблений для тривалої та стабільної роботи.</li>
+                <li><strong>Знижений рівень шуму:</strong> Оснащений звукоізоляційним кожухом (Super silent) для тихої роботи.</li>
+                <li><strong>Електричний старт:</strong> Зручний електричний запуск для швидкого увімкнення генератора.</li>
+                <li><strong>Переносна конструкція:</strong> Включає вбудований транспортувальний комплект з 4 колесами для легкого переміщення.</li>
+                <li><strong>Можливість підключення АВР:</strong> Готовий до підключення зовнішнього блоку АВР для автоматизації роботи.</li>
+                <li><strong>Інтелектуальна система AVR:</strong> Автоматичний регулятор напруги, що забезпечує стабільну напругу на виході.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="product-content">
+        <div class="product-details" style="flex: 1;">
+            <!-- Tabs for specifications and accessories -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'specifications')">Технічні характеристики</button>
+                <button class="tab-button" onclick="openTab(event, 'accessories')">Комплектація</button>
+            </div>
+
+            <!-- Tab content -->
+            <div id="specifications" class="tab-content" style="display: block;">
+                <ul class="specifications-grid">
+                    <li><strong>Напруга, В:</strong> 230</li>
+                    <li><strong>Макс./ном. потужність (230 В), кВт:</strong> 8 / 7.5</li>
+                    <li><strong>Коефіцієнт потужності, cosφ:</strong> 1</li>
+                    <li><strong>Частота, Гц:</strong> 50</li>
+                    <li><strong>Максимальний струм, А:</strong> 34.78</li>
+                    <li><strong>Розетки:</strong> 1 x Schuko 230 V, 1 x CEE 230 V 32 A</li>
+                    <li><strong>Час роботи при навантаженні 50%, год:</strong> 13.2</li>
+                    <li><strong>Led дисплей:</strong> Лічильник мотогодин, частота, вольтаж</li>
+                    <li><strong>Рівень шуму, LpA (7m)/LwA, дБ:</strong> 64/89</li>
+                    <li><strong>Вихід 12В, А:</strong> 12/8.3</li>
+                    <li><strong>Модель двигуна:</strong> KS 690HD</li>
+                    <li><strong>Потужність двигуна, к.с./кВт:</strong> 15.0 / 11.03</li>
+                    <li><strong>Передстартовий підігрів:</strong> Так</li>
+                    <li><strong>Ємність паливного баку, л:</strong> 25</li>
+                    <li><strong>Ємність масляного картера, л:</strong> 2.2</li>
+                    <li><strong>Об’єм двигуна, см³:</strong> 668</li>
+                    <li><strong>Регулятор напруги:</strong> Інтелектуальна система AVR</li>
+                    <li><strong>Тип запуску:</strong> Електричний</li>
+                    <li><strong>Ємність акумулятора, А·год:</strong> 36</li>
+                    <li><strong>Вихід ATS:</strong> Так</li>
+                    <li><strong>Клас захисту:</strong> IP23M</li>
+                    <li><strong>Габарити нетто, мм:</strong> 1100×600×750</li>
+                    <li><strong>Габарити брутто, мм:</strong> 1150×650×850</li>
+                    <li><strong>Вага нетто, кг:</strong> 216</li>
+                    <li><strong>Вага брутто, кг:</strong> 230.0</li>
+                </ul>
+            </div>
+            <div id="accessories" class="tab-content" style="display: none;">
+                <p>Комплектація може відрізнятися в залежності від постачання. Зазвичай включає:</p>
+                <ul class="styled-list">
+                    <li>Генератор дизельний</li>
+                    <li>Транспортувальний комплект (колеса та ручки)</li>
+                    <li>Ключ для запуску</li>
+                    <li>Лійка для палива</li>
+                    <li>Інструкція з експлуатації та гарантійний талон</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-content">
+        <div class="product-details" style="flex: 1;">
+            <h2 class="section-title">Особливості товару</h2>
+
+            <!-- Features as Accordion -->
+            <div class="features-container">
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">01</span><span>Ергономічна панель керування</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Зручна ергономічна панель управління генератора дозволяє легко керувати ним, а вбудовані системи захисту від перевантаження та низького рівня масла забезпечують його безпечну експлуатацію. Панель обладнана багатофункціональним LED-дисплеєм для моніторингу напруги, частоти, а також лічильником мотогодин. На ній також розташовані розетки, клеми заземлення та інші необхідні елементи для простого підключення та експлуатації.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/panel-upravleniya_2b668ece-77e2-4f4a-b45e-8fab5f84c2cd.png?v=1723486205&width=300" alt="Ергономічна панель керування">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">02</span><span>Захисний антивандальний кожух</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Всепогодний, антивандальний, шумозахисний корпус надійно захищає генератор від механічних пошкоджень та зовнішніх погодних умов. Завдяки покращеній системі охолодження та зниженій вібрації, генератор працює ефективно та безперебійно, незалежно від умов експлуатації. Це ідеальне рішення для використання на будівельних майданчиках, у заміських будинках або для мобільних бригад.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/korpus-2.png?v=1723486204&width=300" alt="Захисний кожух">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">03</span><span>Надійні фірмові двигуни</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Двигуни для дизельних генераторів Könner & Söhnen виробляються за ліцензією DIMAX International GmbH та мають власний клейм з логотипом. Перед встановленням кожен двигун проходить багатогодинні тести та перевірки, щоб гарантувати високу якість та надійність. Двигуни Könner & Söhnen відповідають усім світовим та європейським стандартам якості та екологічності.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/motor-ks-3.jpg?v=1723486206&width=300" alt="Фірмовий двигун">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">04</span><span>Передстартовий підігрів (Preheater)</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Дизельні генератори Könner & Söhnen оснащені системою передстартового підігріву (PREHEATER), яка дозволяє легко запускати двигун навіть в холодну пору року. Ця функція забезпечує старт генератора при низьких температурах, що особливо важливо для українського клімату.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/preheater_KS-11-2DE-ATSR.jpg?v=1723486202&width=300" alt="Передстартовий підігрів">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">05</span><span>Транспортувальний комплект</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Генератор обладнаний вбудованим транспортувальний комплект з 4-ма колесами, що не потребує додаткових витрат. Колеса з твердої гуми та ручки для зручного перенесення дозволяють легко переміщувати генератор по будь-якій поверхні, що значно спрощує його експлуатацію та зберігання.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/img602.jpg?v=1723486204&width=300" alt="Транспортувальний комплект">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">06</span><span>Super silent</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Завдяки спеціальному шумозахисному кожуху та системі Super Silent, генератор працює на мінімальному рівні шуму, що дозволяє використовувати його в будь-яких умовах, не турбуючи оточуючих. Це особливо важливо для житлових районів та об'єктів, де потрібна тиша. Кожух знижує шум завдяки двокамерному корпусу та подвійному глушнику.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/KS-11-2DE-ATSR_silent.png?v=1723486205&width=300" alt="Super silent кожух">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feature-item" onclick="toggleFeatureAccordion(this)">
+                    <div class="feature-item-title">
+                        <span class="number-box">07</span><span>Можливість підключення АВР</span>
+                    </div>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="feature-content">
+                    <div class="feature-content-inner">
+                        <div class="feature-content-layout">
+                            <div class="content-text">
+                                <p>Дизельний генератор KS 11-2DE ATSR готовий до підключення зовнішнього блоку АВР (автоматичного введення резерву), що дозволяє йому автоматично вмикатися у разі збоїв в електромережі та вимикатися, коли електропостачання відновлюється. Завдяки цій функції, ви отримаєте безперебійне електропостачання без необхідності ручного втручання.</p>
+                            </div>
+                            <div class="content-image">
+                                <img src="https://konner-sohnen.com.ua/cdn/shop/files/diesel-ats-4-63-macro.jpg?v=1723486198&width=300" alt="Блок АВР">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="product-content">
+        <div class="product-details" style="flex: 1;">
+            <h2 class="section-title">Оплата, доставка та контакти</h2>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h3>Оплата</h3>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p>Оплатити замовлення можна такими способами:</p>
+                        <ul class="styled-list">
+                            <li>Готівкою при отриманні</li>
+                            <li>Безготівковий розрахунок (для юридичних та фізичних осіб)</li>
+                            <li>Онлайн-оплата картою Visa / Mastercard</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h3>Доставка</h3>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p>Ми здійснюємо доставку по всій Україні через транспортні компанії, такі як Нова Пошта.</p>
+                        <ul class="styled-list">
+                            <li>Доставка до відділення Нової Пошти</li>
+                            <li>Кур'єрська доставка до дверей</li>
+                            <li>Самовивіз зі складу в м. Київ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h3>Контакти</h3>
+                    <span class="accordion-icon">&#9660;</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <div class="contacts-grid">
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <div class="contact-icon icon-person">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                    </div>
+                                    <span class="contact-text">Сергій Дарменко</span>
+                                </div>
+                                <div class="contact-item">
+                                    <div class="contact-icon icon-company">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                                    </div>
+                                    <span class="contact-text">ТОВ «ПАТРІОТ ТЕХНІКА»</span>
+                                </div>
+                                <div class="contact-item">
+                                    <div class="contact-icon icon-phone">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                                    </div>
+                                    <span class="contact-text"><a href="tel:+380671234567">+380 (67) 314-12-37</a></span>
+                                </div>
+                                <div class="contact-item">
+                                    <div class="contact-icon icon-email">
+                                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    </div>
+                                    <span class="contact-text"><a href="mailto:info@example.com">patriottekhnika@gmail.com</a></span>
+                                </div>
+                                <div class="contact-item">
+                                    <div class="contact-icon icon-website">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                                    </div>
+                                    <span class="contact-text"><a href="https://example.com" target="_blank">patriottekhnika.com.ua</a></span>
+                                </div>
+                            </div>
+                            <div class="map-container">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115.52906402450849!2d30.3967561!3d50.4619595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cdefe3eed945%3A0xf1bf5cfe69ddc48!2z0J7QsdC-0YPRgtC-0Y_Rh9C10YIg0JvRltC70LDRgNCw0L3RgdC-0LrQsA!5e0!3m2!1sru!2sua!4v1725952924151!5m2!1sru!2sua" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Image Gallery ---
+    function changeMainImage(thumbnailElement) {
+        const mainImage = document.getElementById('mainProductImage');
+        mainImage.src = thumbnailElement.src;
+
+        // Manage active state for thumbnails
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach(thumb => thumb.classList.remove('active'));
+        thumbnailElement.classList.add('active');
+    }
+
+    // --- Tabs ---
+    function openTab(event, tabName) {
+        // Hide all tab content
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.style.display = 'none');
+
+        // Deactivate all tab buttons
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => button.classList.remove('active'));
+
+        // Show the selected tab content and activate the button
+        document.getElementById(tabName).style.display = 'block';
+        event.currentTarget.classList.add('active');
+    }
+
+    // --- Accordion for Features ---
+    function toggleFeatureAccordion(element) {
+        const featureItem = element;
+        const featureContent = featureItem.nextElementSibling;
+
+        if (featureContent && featureContent.classList.contains('feature-content')) {
+            const isActive = featureItem.classList.toggle('active');
+
+            if (isActive) {
+                // Close all other accordions in the same container
+                const allFeatureItems = document.querySelectorAll('.feature-item');
+                allFeatureItems.forEach(item => {
+                    if (item !== featureItem && item.classList.contains('active')) {
+                        item.classList.remove('active');
+                        item.nextElementSibling.style.maxHeight = '0';
+                        item.nextElementSibling.style.padding = '0 20px';
+                    }
+                });
+
+                // Open the selected accordion
+                featureContent.style.maxHeight = featureContent.scrollHeight + 'px';
+                featureContent.style.padding = '20px';
+            } else {
+                featureContent.style.maxHeight = '0';
+                featureContent.style.padding = '0 20px';
+            }
+        }
+    }
+
+    // --- Generic Accordion (for Contacts, etc.) ---
+    function toggleAccordion(element) {
+        // Find the parent .accordion-item
+        const accordionItem = element.closest('.accordion-item');
+        if (!accordionItem) return;
+
+        // Find the sibling .accordion-content
+        const content = accordionItem.querySelector('.accordion-content');
+        if (!content) return;
+
+        const isActive = accordionItem.classList.toggle('active');
+
+        if (isActive) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            content.style.padding = '20px';
+        } else {
+            content.style.maxHeight = '0';
+            content.style.padding = '0 20px';
+        }
+    }
+    
+</script>
+
+</body>
+</html>
